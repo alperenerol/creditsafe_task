@@ -12,4 +12,4 @@ def save_json(output_filename, data):
     # Save the JSON data to a file
     import json
     with open(output_filename, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4)
+        json.dump(data, f, indent=4, ensure_ascii=False)

@@ -19,3 +19,6 @@ OUTPUT_DIR = os.path.join(BASE_DIR, 'data', 'outputs')
 # Other configurations (optional)
 LOG_DIR = os.path.join(BASE_DIR, 'logs')
 LOG_FILE = os.path.join(LOG_DIR, 'process.log')
+
+# API keys
+GROQ_API_KEY = "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"

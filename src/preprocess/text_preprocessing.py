@@ -12,41 +12,50 @@ def preprocess_text(text):
     Returns:
         str: The cleaned and preprocessed text.
     """
-    # Step 1: Normalize Whitespaces
+
+    # Step 1: Remove Garbled Text and Noise
+    text = remove_garbled_text(text)
+
+    # Step 2: Fix Common OCR Errors
+    text = fix_common_ocr_errors(text)
+
+    # Step 3: Normalize Whitespaces
     text = normalize_whitespaces(text)
-
-    # Step 2: Correct Punctuation Spacing
-    text = fix_punctuation_spacing(text)
-
-    # Step 3: Remove Special Characters (excluding common punctuation)
-    text = remove_special_characters(text)
-
-    # Step 4: Clean Unnecessary Lines
-    text = clean_unnecessary_lines(text)
 
     return text
 
-# Step 1: Normalize Whitespaces
+# Normalize Whitespaces
 def normalize_whitespaces(text):
     # Replace multiple spaces and tabs with a single space
     return re.sub(r'\s+', ' ', text).strip()
 
-# Step 2: Correct Punctuation Spacing
-def fix_punctuation_spacing(text):
-    # Remove spaces before punctuation and ensure a single space after punctuation
-    text = re.sub(r"\s+([.,;:!?])", r"\1", text)  # Remove space before punctuation
-    text = re.sub(r"([.,;:!?])(\w)", r"\1 \2", text)  # Ensure space after punctuation if needed
+# Remove Garbled Text and Noise
+def remove_garbled_text(text):
+    # Remove sequences of random, repeated characters or meaningless text
+    # Remove sequences of repeated characters (letters/numbers) with no structure
+    text = re.sub(r'\b\w{1,2}(\s+\w{1,3}){4,6}\b', '', text)  # Repeated short words or letters
+
     return text
 
-# Step 3: Remove Special Characters (keep common punctuation and alphanumeric characters)
-def remove_special_characters(text):
-    # Remove any character that is not a word character, space, or common punctuation
-    return re.sub(r'[^\w\s.,!?;:]', '', text)
+# Fix Common OCR Errors
+def fix_common_ocr_errors(text):
+    # Correct errors in Company Identifier
+    text = re.sub(r'\bN° centreprise\b', "N° d'entreprise", text)  # Fix "centreprise" to "d'entreprise"
+    text = re.sub(r'\bN° dentraprise\b', "N° d'entreprise", text)  # Fix "dentraprise" to "d'entreprise"
+    text = re.sub(r'\bwe dentreprise\b', "N° d'entreprise", text)  # Fix "we dentreprise" typo
+    text = re.sub(r'\bNow\b', "Nom", text)  # Correct "Now" to "Nom"
 
-# Step 4: Clean Unnecessary Lines
-def clean_unnecessary_lines(text):
-    # Remove lines that consist only of non-alphanumeric characters or whitespace
-    text = re.sub(r'^[^a-zA-Z0-9]+$', "", text, flags=re.MULTILINE)
-    # Remove excessive empty lines
-    text = re.sub(r'\n{2,}', '\n\n', text)
+    # Correct errors in Company Name and related fields
+    text = re.sub(r'\bfen entier\b', "(en entier)", text)  # Fix "fen entier" to "(en entier)"
+    text = re.sub(r'\bfen abrégé\b', "(en abrégé)", text)  # Fix "fen abrégé" to "(en abrégé)"
+    text = re.sub(r'\bfenentiey\b', "(en entier)", text)  # Correct further variant "fenentiey"
+    text = re.sub(r'\bfen enter\b', "(en entier)", text)  # Fix variant "fen enter"
+    text = re.sub(r'\bfan entier\b', "(en entier)", text)  # Fix variant "fan entier"
+    text = re.sub(r'\bfan abrégé\b', "(en abrégé)", text)  # Fix variant "fan abrégé"
+
+    # Correct errors in Document Purpose
+    text = re.sub(r'\bObjet de Pacte\b', "Objet de l'acte", text)  # Fix "Objet de Pacte" to "Objet de l'acte"
+    text = re.sub(r"\bObiet de 'acte\b", "Objet de l'acte", text)  # Correct missing "l'" apostrophe
+    text = re.sub(r"\bObiet\b", "Objet", text)  # Fix "Obiet" to "Objet"
+    text = re.sub(r'\bOblet\b', "Objet", text)  # Fix further misspellings of "Objet"
     return text

@@ -19,7 +19,7 @@ def extract_text(pdf_path):
 
     try:
         # Convert PDF to images (one image per page)
-        images = convert_from_path(pdf_path, dpi=300)
+        images = convert_from_path(pdf_path, dpi=400)
 
         # Iterate through each page image and perform OCR
         for page_number, image in enumerate(images, start=1):
@@ -30,10 +30,10 @@ def extract_text(pdf_path):
             gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
             # Apply thresholding to improve text clarity for OCR
-            _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+            thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 4) # c=6, dpi=400 optimal for pdf5-10
 
             # Perform OCR on the thresholded image
-            text = pytesseract.image_to_string(thresh, lang='fra+dutch+ger+eng')  # Add 'lang' to specify the language
+            text = pytesseract.image_to_string(thresh)  # Add 'lang' to specify the language
 
             # Add the page number and extracted text to the final text output
             extracted_text += f"--- Page {page_number} ---\n{text}\n"

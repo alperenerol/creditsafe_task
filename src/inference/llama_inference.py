@@ -23,8 +23,8 @@ def generate_response(messages):
         response = client.chat.completions.create(
             model="llama-3.1-70b-versatile",  # Specify the model you want to use
             messages=messages,
-            temperature=0.4,           # Adjust temperature for response creativity (lower means more focused)
-            max_tokens=150,            # Adjust maximum tokens in response
+            temperature=0.2,           # Adjust temperature for response creativity (lower means more focused)
+            max_tokens=1000,            # Adjust maximum tokens in response
             top_p=1.0,                 # Top-p sampling for response diversity
             stream=False               # No streaming, simple response generation
 )

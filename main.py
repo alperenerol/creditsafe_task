@@ -3,6 +3,7 @@ import json
 import logging
 #import argparse
 from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import as_completed
 from config import PDF_DIR, TEXT_DIR, OUTPUT_DIR, LOG_FILE
 from src.extract.ocr_extraction import extract_text
 from src.preprocess.text_preprocessing import preprocess_text
@@ -33,6 +34,7 @@ def pdf_extract(pdf_file):
         raw_text_path = os.path.join(TEXT_DIR, pdf_file.replace('.pdf', '_raw.txt'))
         save_text(raw_text_path, raw_text)
         logging.info(f"Raw text saved for {pdf_file}")
+        return raw_text
 
     except Exception as e:
         logging.error(f"Error processing {pdf_file}: {str(e)}")
@@ -47,8 +49,15 @@ def parallel_pdf_extract():
     # Use ProcessPoolExecutor for parallel PDF extraction
     max_workers = int(0.3 * os.cpu_count())
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
-        # Submit tasks to the executor for parallel processing
-        executor.map(pdf_extract, pdf_files)
+        # Submit each task individually using executor.submit for finer control
+        futures = [executor.submit(pdf_extract, pdf_file) for pdf_file in pdf_files]
+        
+        # Use as_completed to process results as they complete
+        for future in as_completed(futures):
+            try:
+                result = future.result()  # You could log results or handle specific errors here
+            except Exception as e:
+                logging.error(f"Error during PDF extraction: {e}")
 
 def raw_text_preprocess():
     # Step 1: Preprocess extracted raw text

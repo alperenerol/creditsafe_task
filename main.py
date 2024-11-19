@@ -45,7 +45,7 @@ def parallel_pdf_extract():
     pdf_files = [f for f in os.listdir(PDF_DIR) if f.endswith('.pdf')]
 
     # Use ProcessPoolExecutor for parallel PDF extraction
-    max_workers = int(0.75 * os.cpu_count())
+    max_workers = int(0.3 * os.cpu_count())
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         # Submit tasks to the executor for parallel processing
         executor.map(pdf_extract, pdf_files)

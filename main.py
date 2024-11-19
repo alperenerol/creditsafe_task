@@ -1,7 +1,8 @@
 import os
+import json
 import logging
 #import argparse
-import json
+from concurrent.futures import ProcessPoolExecutor
 from config import PDF_DIR, TEXT_DIR, OUTPUT_DIR, LOG_FILE
 from src.extract.ocr_extraction import extract_text
 from src.preprocess.text_preprocessing import preprocess_text
@@ -12,30 +13,42 @@ from src.utils.logging_utils import setup_logging, reset_logging
 # Set up logging
 setup_logging(log_file=LOG_FILE, level=logging.INFO, console=True)
 
-def pdf_extract():
+def pdf_extract(pdf_file):
+    """
+    Extract text from a PDF and save it to disk.
+    
+    Args:
+        pdf_file (str): The filename of the PDF file.
+    """
+    pdf_path = os.path.join(PDF_DIR, pdf_file)
+    try:
+        # Extract Text
+        logging.info(f"Extracting text from {pdf_file}")
+        raw_text = extract_text(pdf_path)
+        if not raw_text:
+            logging.warning(f"No text extracted from {pdf_file}. Skipping...")
+            return  # Skip to the next file if extraction fails
+
+        # Save Extracted Raw Text
+        raw_text_path = os.path.join(TEXT_DIR, pdf_file.replace('.pdf', '_raw.txt'))
+        save_text(raw_text_path, raw_text)
+        logging.info(f"Raw text saved for {pdf_file}")
+
+    except Exception as e:
+        logging.error(f"Error processing {pdf_file}: {str(e)}")
+
+def parallel_pdf_extract():
     # Step 1: Extract Text and Preprocess
-    logging.info("Starting extraction and preprocessing...")
+    logging.info("Starting parallel extraction and preprocessing...")
 
     # Get list of all PDF files
     pdf_files = [f for f in os.listdir(PDF_DIR) if f.endswith('.pdf')]
 
-    for pdf_file in pdf_files:
-        pdf_path = os.path.join(PDF_DIR, pdf_file)
-
-        try:
-            # Extract Text
-            logging.info(f"Extracting text from {pdf_file}")
-            raw_text = extract_text(pdf_path)
-            if not raw_text:
-                continue  # Skip to the next file if extraction fails
-
-            # Save Extracted Raw Text
-            raw_text_path = os.path.join(TEXT_DIR, pdf_file.replace('.pdf', '_raw.txt'))
-            save_text(raw_text_path, raw_text)
-            logging.info(f"Raw text saved for {pdf_file}")
-
-        except Exception as e:
-            logging.error(f"Error processing {pdf_file}: {str(e)}")
+    # Use ProcessPoolExecutor for parallel PDF extraction
+    max_workers = int(0.75 * os.cpu_count())
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        # Submit tasks to the executor for parallel processing
+        executor.map(pdf_extract, pdf_files)
 
 def raw_text_preprocess():
     # Step 1: Preprocess extracted raw text
@@ -128,7 +141,10 @@ def perform_inference():
             logging.error(f"Error processing {text_file}: {str(e)}")
 
 if __name__ == "__main__":
-    pdf_extract()
-    raw_text_preprocess()
-    perform_inference()
+    parallel_pdf_extract()
+    # Get list of all PDF files
+    #pdf_files = [f for f in os.listdir(PDF_DIR) if f.endswith('.pdf')][2]
+    #pdf_extract(pdf_files)
+    #raw_text_preprocess()
+    #perform_inference()
     reset_logging()

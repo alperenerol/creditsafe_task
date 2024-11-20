@@ -3,10 +3,16 @@ import os
 import json
 from tempfile import TemporaryDirectory
 
-from src.utils.file_utils import save_text, save_json, get_raw_text_path, get_preprocessed_text_path
+from src.utils.file_utils import (
+    save_text,
+    save_json,
+    get_raw_text_path,
+    get_preprocessed_text_path,
+)
+
 
 class TestFileUtils(unittest.TestCase):
-    
+
     def setUp(self):
         # Create a temporary directory for testing
         self.test_dir = TemporaryDirectory()
@@ -24,7 +30,7 @@ class TestFileUtils(unittest.TestCase):
         save_text(test_file, test_content)
 
         # Verify that the file was created and contains the correct content
-        with open(test_file, 'r', encoding='utf-8') as f:
+        with open(test_file, "r", encoding="utf-8") as f:
             content = f.read()
         self.assertEqual(content, test_content)
 
@@ -36,7 +42,7 @@ class TestFileUtils(unittest.TestCase):
         save_json(test_file, new_data)
 
         # Verify that the file was created and contains the correct data
-        with open(test_file, 'r', encoding='utf-8') as f:
+        with open(test_file, "r", encoding="utf-8") as f:
             data = json.load(f)
         self.assertEqual(data, [new_data])
 
@@ -48,12 +54,12 @@ class TestFileUtils(unittest.TestCase):
 
         # Create the initial JSON file
         save_json(test_file, initial_data)
-        
+
         # Append new data
         save_json(test_file, new_data)
 
         # Verify that the file contains both entries
-        with open(test_file, 'r', encoding='utf-8') as f:
+        with open(test_file, "r", encoding="utf-8") as f:
             data = json.load(f)
         self.assertEqual(data, [initial_data, new_data])
 
@@ -62,7 +68,7 @@ class TestFileUtils(unittest.TestCase):
         test_file = os.path.join(self.test_dir_path, "invalid.json")
 
         # Create an invalid JSON file
-        with open(test_file, 'w', encoding='utf-8') as f:
+        with open(test_file, "w", encoding="utf-8") as f:
             f.write("INVALID JSON CONTENT")
 
         # Attempt to append new data to the invalid JSON file
@@ -70,7 +76,7 @@ class TestFileUtils(unittest.TestCase):
         save_json(test_file, new_data)
 
         # Verify that the invalid file was replaced with the new data
-        with open(test_file, 'r', encoding='utf-8') as f:
+        with open(test_file, "r", encoding="utf-8") as f:
             data = json.load(f)
         self.assertEqual(data, [new_data])
 
@@ -86,11 +92,14 @@ class TestFileUtils(unittest.TestCase):
     def test_get_preprocessed_text_path(self):
         # Test if get_preprocessed_text_path returns the correct path
         pdf_file = "test_document.pdf"
-        expected_path = os.path.join(self.test_dir_path, "test_document_preprocessed.txt")
+        expected_path = os.path.join(
+            self.test_dir_path, "test_document_preprocessed.txt"
+        )
 
         # Call get_preprocessed_text_path with the test directory
         result = get_preprocessed_text_path(pdf_file, text_dir=self.test_dir_path)
         self.assertEqual(result, expected_path)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

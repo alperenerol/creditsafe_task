@@ -1,6 +1,7 @@
 import os
 import logging
 
+
 def setup_logging(log_file=None, level=logging.INFO, console=True):
     """
     Sets up logging for the application.
@@ -11,8 +12,8 @@ def setup_logging(log_file=None, level=logging.INFO, console=True):
         console (bool): Whether to also print logs to the console (default is True).
     """
     # Define the logging format
-    log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    date_format = '%Y-%m-%d %H:%M:%S'
+    log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    date_format = "%Y-%m-%d %H:%M:%S"
 
     # Get the root logger
     logger = logging.getLogger()
@@ -25,15 +26,20 @@ def setup_logging(log_file=None, level=logging.INFO, console=True):
             os.makedirs(os.path.dirname(log_file), exist_ok=True)
             file_handler = logging.FileHandler(log_file)
             file_handler.setLevel(level)
-            file_handler.setFormatter(logging.Formatter(log_format, datefmt=date_format))
+            file_handler.setFormatter(
+                logging.Formatter(log_format, datefmt=date_format)
+            )
             logger.addHandler(file_handler)
 
         # Console Handler (if console output is desired)
         if console:
             console_handler = logging.StreamHandler()
             console_handler.setLevel(level)
-            console_handler.setFormatter(logging.Formatter(log_format, datefmt=date_format))
+            console_handler.setFormatter(
+                logging.Formatter(log_format, datefmt=date_format)
+            )
             logger.addHandler(console_handler)
+
 
 def reset_logging():
     logging.info(f"Program execution completed successfully.")
@@ -44,4 +50,3 @@ def reset_logging():
         handler.close()
         logging.root.removeHandler(handler)
         handler = None
-    

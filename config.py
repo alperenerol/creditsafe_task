@@ -8,17 +8,17 @@ except NameError:
     BASE_DIR = os.getcwd()
 
 # Directory for storing input PDF files
-PDF_DIR = os.path.join(BASE_DIR, 'data', 'pdfs', 'BE_GAZETTE_PDFS')
+PDF_DIR = os.path.join(BASE_DIR, "data", "pdfs", "BE_GAZETTE_PDFS")
 
 # Directory for storing preprocessed text files
-TEXT_DIR = os.path.join(BASE_DIR, 'data', 'text')
+TEXT_DIR = os.path.join(BASE_DIR, "data", "text")
 
 # Directory for storing final output JSON files
-OUTPUT_DIR = os.path.join(BASE_DIR, 'data', 'outputs')
+OUTPUT_DIR = os.path.join(BASE_DIR, "data", "outputs")
 
 # Other configurations (optional)
-LOG_DIR = os.path.join(BASE_DIR, 'logs')
-LOG_FILE = os.path.join(LOG_DIR, 'process.log')
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+LOG_FILE = os.path.join(LOG_DIR, "process.log")
 
 # GroqCloud
 # API keys

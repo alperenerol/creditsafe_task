@@ -4,6 +4,7 @@ from groq import Groq
 from config import GROQ_API_KEY
 from src.utils.error_utils import handle_errors
 
+
 @handle_errors(log_message="Error during response generation")
 def generate_response(messages):
     """
@@ -24,12 +25,12 @@ def generate_response(messages):
         response = client.chat.completions.create(
             model="llama-3.1-70b-versatile",  # Specify the model you want to use
             messages=messages,
-            temperature=0.2,           # Adjust temperature for response creativity (lower means more focused)
-            max_tokens=500,            # Adjust maximum tokens in response
-            top_p=1.0,                 # Top-p sampling for response diversity
-            stream=False,               # No streaming, simple response generation
-            response_format={ "type": "json_object" }
-)
+            temperature=0.2,  # Adjust temperature for response creativity (lower means more focused)
+            max_tokens=500,  # Adjust maximum tokens in response
+            top_p=1.0,  # Top-p sampling for response diversity
+            stream=False,  # No streaming, simple response generation
+            response_format={"type": "json_object"},
+        )
 
         # Collect the chunks from the stream and return the final response
         response_text = response.choices[0].message.content

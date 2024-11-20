@@ -5,6 +5,7 @@ from pdf2image import convert_from_path
 
 from src.utils.error_utils import handle_errors
 
+
 @handle_errors(log_message="Error during text extraction")
 def extract_text_ocr(pdf_path):
     """
@@ -12,7 +13,7 @@ def extract_text_ocr(pdf_path):
 
     Args:
         pdf_path (str): The path to the PDF file.
-    
+
     Returns:
         str: The extracted text from the PDF.
     """
@@ -31,10 +32,14 @@ def extract_text_ocr(pdf_path):
             gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
             # Apply thresholding to improve text clarity for OCR
-            thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 4) # c=6, dpi=400 optimal for pdf5-10
+            thresh = cv2.adaptiveThreshold(
+                gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 4
+            )  # c=6, dpi=400 optimal for pdf5-10
 
             # Perform OCR on the thresholded image
-            text = pytesseract.image_to_string(thresh)  # Add 'lang' to specify the language
+            text = pytesseract.image_to_string(
+                thresh
+            )  # Add 'lang' to specify the language
 
             # Add the page number and extracted text to the final text output
             extracted_text += f"--- Page {page_number} ---\n{text}\n"

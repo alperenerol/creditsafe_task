@@ -48,7 +48,7 @@ project-root/
 │   └── test_preprocessing_step.py
 ├── data/
 │   ├── pdfs/
-│   ├── texts/
+│   ├── text/
 │   ├── outputs/
 ├── logs/
 ├── Dockerfile
@@ -168,14 +168,6 @@ For an input PDF "24000009.pdf" containing company information, the output is st
 }
 ```
 
-## Troubleshooting
-
-Too Many Requests (429): The rate limit headers are used to manage API requests. Implement exponential backoff or reduce token usage to avoid exceeding limits.
-
-OCR Issues: Ensure Tesseract is properly installed and configured. Check the quality of PDF scans, as poor quality may lead to inaccurate OCR.
-
-Empty Response from LLM: The script logs any empty responses. Check your API key and retry after the recommended wait time.
-
 ### Running with Docker (Optional)
 
 If you'd like to run the project inside a Docker container, follow these instructions:
@@ -194,7 +186,7 @@ You can build a Docker image of this project to avoid manual dependency installa
 
 To run the Docker container:
 
-```docker run -it --rm -v $(pwd)/data:/workspace/data task_ocr_llm```
+```docker run -it --rm -v $(pwd)/data:/workspace/data task_ocr_llm python main.py```
 
 This command mounts the output folder in your current directory so you can easily access the results.
 
@@ -202,5 +194,5 @@ This command mounts the output folder in your current directory so you can easil
 
 You can also run the tests within the Docker container:
 
-```docker run -it --rm task_ocr_llm python -m unittest discover tests```
+```docker run -it --rm -v $(pwd)/data:/workspace/data task_ocr_llm python -m unittest discover tests```
 

@@ -59,7 +59,7 @@ project-root/
 
 Stable internet connection
 
-Python 3.9+
+Python 3.10+
 
 Tesseract OCR (for OCR extraction)
 

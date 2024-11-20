@@ -1,7 +1,8 @@
 import logging
+from groq import Groq
+
 from config import GROQ_API_KEY
 from src.utils.error_utils import handle_errors
-from groq import Groq
 
 @handle_errors(log_message="Error during response generation")
 def generate_response(messages):

@@ -1,11 +1,12 @@
-from src.utils.error_utils import handle_errors
-from pdf2image import convert_from_path
-import pytesseract
 import cv2
 import numpy as np
+import pytesseract
+from pdf2image import convert_from_path
+
+from src.utils.error_utils import handle_errors
 
 @handle_errors(log_message="Error during text extraction")
-def extract_text(pdf_path):
+def extract_text_ocr(pdf_path):
     """
     Extracts text from a PDF file by converting each page to an image and using OCR.
 
@@ -43,4 +44,3 @@ def extract_text(pdf_path):
         raise RuntimeError(f"Failed to extract text from {pdf_path}: {str(e)}")
 
     return extracted_text
-    

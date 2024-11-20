@@ -1,8 +1,9 @@
 import re
+
 from src.utils.error_utils import handle_errors
 
 @handle_errors(log_message="Error during text preprocessing")
-def preprocess_text(text):
+def process_text(text):
     """
     Preprocesses the extracted text by applying various cleaning and formatting steps.
 
@@ -59,3 +60,4 @@ def fix_common_ocr_errors(text):
     text = re.sub(r"\bObiet\b", "Objet", text)  # Fix "Obiet" to "Objet"
     text = re.sub(r'\bOblet\b', "Objet", text)  # Fix further misspellings of "Objet"
     return text
+

@@ -27,7 +27,8 @@ def generate_response(messages):
             temperature=0.2,           # Adjust temperature for response creativity (lower means more focused)
             max_tokens=1000,            # Adjust maximum tokens in response
             top_p=1.0,                 # Top-p sampling for response diversity
-            stream=False               # No streaming, simple response generation
+            stream=False,               # No streaming, simple response generation
+            response_format={ "type": "json_object" }
 )
 
         # Collect the chunks from the stream and return the final response

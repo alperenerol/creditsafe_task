@@ -1,5 +1,7 @@
 import os
 import json
+import logging
+
 from config import TEXT_DIR
 from src.utils.error_utils import handle_errors
 
@@ -40,7 +42,7 @@ def save_json(output_filename, new_data):
     with open(output_filename, 'w', encoding='utf-8') as json_file:
         json.dump(data, json_file, indent=4, ensure_ascii=False)
 
-    print(f"New data appended to {output_filename}")
+    logging.info(f"New LLM response data appended to output file.")
 
 def get_raw_text_path(pdf_file):
     return os.path.join(TEXT_DIR, pdf_file.replace('.pdf', '_raw.txt'))

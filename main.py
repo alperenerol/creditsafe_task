@@ -1,9 +1,9 @@
 import os
 import logging
-from config import PDF_DIR, LOG_FILE
 from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures import as_completed
 
+from config import PDF_DIR, LOG_FILE
 from src.extract.pdf_extraction_step import pdf_extract
 from src.preprocess.preprocessing_step import raw_text_preprocess
 from src.inference.inference_step import perform_inference

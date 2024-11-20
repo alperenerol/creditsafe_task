@@ -20,5 +20,24 @@ OUTPUT_DIR = os.path.join(BASE_DIR, 'data', 'outputs')
 LOG_DIR = os.path.join(BASE_DIR, 'logs')
 LOG_FILE = os.path.join(LOG_DIR, 'process.log')
 
+# GroqCloud
 # API keys
 GROQ_API_KEY = "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"
+
+# LLM System Prompt
+SYSTEM_PROMPT = """
+You are an information extraction assistant. Your task is to extract specific information from the provided text
+and return it in a structured JSON format. Follow these instructions closely for the best results.
+
+From the following text, extract the specified information and return it as a JSON object.
+
+Information to extract:
+    1. Company Name: The full legal name of the company.
+    2. Company Identifier: Any unique identifier for the company (e.g., registration number).
+    3. Document Purpose: Include all relevant and important fields about the document purpose from the text under the 'Document Purpose' section.
+        - Each piece of information should be included as a separate key within the 'Document Purpose' key.
+
+Output Requirements:
+    - Return only the JSON object with no additional text or explanations.
+    - Ensure the JSON object is well-formatted and complete.
+"""

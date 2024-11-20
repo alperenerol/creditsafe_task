@@ -1,7 +1,7 @@
 import os
 import json
 import logging
-from config import OUTPUT_DIR
+from config import OUTPUT_DIR, SYSTEM_PROMPT
 
 from src.utils.file_utils import save_json
 from src.inference.llama_response import generate_response
@@ -13,19 +13,7 @@ def perform_inference(preprocessed_text, pdf_file):
         messages = [
             {
                 "role": "system",
-                "content": (
-                    "You are an information extraction assistant. Your task is to extract specific information from the provided text "
-                    "and return it in a structured JSON format. Follow these instructions closely for the best results.\n\n"
-                    "From the following text, extract the specified information and return it as a JSON object.\n\n"
-                    "Information to extract:\n"
-                    "    1. Company Name: The full legal name of the company.\n"
-                    "    2. Company Identifier: Any unique identifier for the company (e.g., registration number).\n"
-                    "    3. Document Purpose: Include all relevant and important fields about the document purpose from the text under the 'Document Purpose' section.\n"
-                    "        - Each piece of information should be included as a separate key within the 'Document Purpose' key.\n\n"
-                    "Output Requirements:\n"
-                    "    - Return only the JSON object with no additional text or explanations.\n"
-                    "    - Ensure the JSON object is well-formatted and complete."
-                )
+                "content": SYSTEM_PROMPT
             },
             {
                 "role": "user", 
@@ -33,6 +21,9 @@ def perform_inference(preprocessed_text, pdf_file):
             }
         ]
         response = generate_response(messages)
+        if not response:
+            logging.error(f"Empty response received for {pdf_file}. Skipping.")
+            return False
 
         # Convert the response string into a dictionary
         try:
@@ -42,7 +33,7 @@ def perform_inference(preprocessed_text, pdf_file):
             response_dict = json.loads(cleaned_response) 
 
         except json.JSONDecodeError as e:
-            logging.error(f"Error decoding JSON for {pdf_file}: {e}. Response was: {response}")
+            logging.error(f"Error decoding JSON for {pdf_file}: {e}.")
             response_dict = {}
 
         # Merge 'file_name' into response_dict
@@ -53,7 +44,6 @@ def perform_inference(preprocessed_text, pdf_file):
 
         # Save merged response_dict directly
         save_json(output_filename, response_dict)
-        logging.info(f"Inference complete for {pdf_file}")
 
     except Exception as e:
         logging.error(f"Error generating response from LLM: {str(e)}")

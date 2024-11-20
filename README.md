@@ -188,13 +188,13 @@ Docker: Make sure Docker is installed on your system. You can download Docker fr
 
 You can build a Docker image of this project to avoid manual dependency installation:
 
-```docker build -t pdf-extraction-inference .```
+```docker build -t task_ocr_llm .```
 
 ### Running the Container
 
 To run the Docker container:
 
-```docker run -it --rm -v $(pwd)/output:/app/output pdf-extraction-inference```
+```docker run -it --rm -v $(pwd)/data:/workspace/data task_ocr_llm```
 
 This command mounts the output folder in your current directory so you can easily access the results.
 
@@ -202,5 +202,5 @@ This command mounts the output folder in your current directory so you can easil
 
 You can also run the tests within the Docker container:
 
-docker run -it --rm pdf-extraction-inference python -m unittest discover tests
+```docker run -it --rm task_ocr_llm python -m unittest discover tests```
 

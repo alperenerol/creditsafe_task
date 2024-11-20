@@ -2,7 +2,7 @@ import os
 import logging
 from config import PDF_DIR, TEXT_DIR
 
-from src.utils.file_utils import save_text, get_raw_text_path
+from src.utils.file_utils import save_text, get_raw_text_path, create_directory
 from src.extract.ocr_operations import extract_text_ocr
 
 
@@ -17,6 +17,7 @@ def pdf_extract(pdf_file, pdf_dir=PDF_DIR):
         tuple: (raw_text, pdf_file) if extraction was successful, otherwise (None, pdf_file)
     """
     pdf_path = os.path.join(pdf_dir, pdf_file)
+    create_directory(TEXT_DIR)  # Ensure TEXT_DIR exists before saving
     # Save Extracted Raw Text
     raw_text_path = get_raw_text_path(pdf_file, text_dir=TEXT_DIR)
 

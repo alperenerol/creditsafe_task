@@ -55,3 +55,9 @@ def get_raw_text_path(pdf_file, text_dir=TEXT_DIR):
 
 def get_preprocessed_text_path(pdf_file, text_dir=TEXT_DIR):
     return os.path.join(text_dir, pdf_file.replace(".pdf", "_preprocessed.txt"))
+
+
+# Function to create necessary directory if not exists
+def create_directory(path):
+    if not os.path.exists(path):
+        os.makedirs(path)

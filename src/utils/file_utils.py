@@ -60,4 +60,6 @@ def get_preprocessed_text_path(pdf_file, text_dir=TEXT_DIR):
 # Function to create necessary directory if not exists
 def create_directory(path):
     if not os.path.exists(path):
-        os.makedirs(path)
+        os.makedirs(
+            path, exist_ok=True
+        )  # Avoid raising an error if the directory already exists

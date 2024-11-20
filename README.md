@@ -65,22 +65,6 @@ Tesseract OCR (for OCR extraction)
 
 Poppler
 
-Python Libraries
-
-pytesseract: OCR integration.
-
-pdf2image 
-
-opencv
-
-groq
-
-concurrent.futures: Parallel processing.
-
-requests: API calls for LLM.
-
-unittest: Testing.
-
 Install all the dependencies using pip:
 
 ```pip install -r requirements.txt```

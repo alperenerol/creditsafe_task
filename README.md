@@ -71,11 +71,15 @@ Install all the dependencies using pip:
 
 ## Setup Instructions
 
-### 1. Install Tesseract OCR
+### 1. Install Tesseract OCR and Poppler
 
-Make sure to install Tesseract OCR before running the project. On Ubuntu, you can do so with:
+Make sure to install Poppler before running the project. On Ubuntu, you can do so with:
 
-```sudo apt-get install tesseract-ocr```
+```sh
+   sudo apt-get update
+   sudo apt-get install -y poppler-utils
+   sudo apt-get install -y tesseract-ocr
+```
 
 ### 2. Configure Project
 

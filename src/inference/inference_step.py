@@ -36,8 +36,8 @@ def perform_inference(preprocessed_text, pdf_file):
             logging.error(f"Error decoding JSON for {pdf_file}: {e}.")
             response_dict = {}
 
-        # Merge 'file_name' into response_dict
-        response_dict.update({"file_name": pdf_file})
+        # Merge 'file_name' into response_dict (optional)
+        #response_dict.update({"file_name": pdf_file})
 
         # Save Response to JSON
         output_filename = os.path.join(OUTPUT_DIR, 'output.json')

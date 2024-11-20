@@ -25,7 +25,7 @@ def generate_response(messages):
             model="llama-3.1-70b-versatile",  # Specify the model you want to use
             messages=messages,
             temperature=0.2,           # Adjust temperature for response creativity (lower means more focused)
-            max_tokens=1000,            # Adjust maximum tokens in response
+            max_tokens=500,            # Adjust maximum tokens in response
             top_p=1.0,                 # Top-p sampling for response diversity
             stream=False,               # No streaming, simple response generation
             response_format={ "type": "json_object" }

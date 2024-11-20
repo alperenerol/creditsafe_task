@@ -33,11 +33,14 @@ From the following text, extract the specified information and return it as a JS
 
 Information to extract:
     1. Company Name: The full legal name of the company.
-    2. Company Identifier: Any unique identifier for the company (e.g., registration number).
-    3. Document Purpose: Include all relevant and important fields about the document purpose from the text under the 'Document Purpose' section.
+    2. Company Identifier: The company identifier (e.g., registration number) should be extracted as a series of digits only, with no spaces or special characters.
+       - For example, if the company identifier is given as "N° d'entreprise: 123 456 789", you should extract it as "123456789".
+   3. Document Purpose: Include all relevant and important fields about the document purpose from the text under the 'Document Purpose' section.
         - Each piece of information should be included as a separate key within the 'Document Purpose' key.
 
 Output Requirements:
     - Return only the JSON object with no additional text or explanations.
     - Ensure the JSON object is well-formatted and complete.
+    - The Company Identifier should only contain digits tied without spacing or other symbols.
+    - **All keys in the JSON response must always be in English.**
 """

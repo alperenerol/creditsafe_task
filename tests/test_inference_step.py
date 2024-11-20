@@ -42,7 +42,6 @@ class TestInference(unittest.TestCase):
 
         # Verify that save_json was called with the correct data
         expected_output = json.loads(self.valid_response)
-        expected_output.update({"file_name": self.pdf_file})
         mock_save_json.assert_called_once_with("/tmp/output.json", expected_output)
 
     @patch("src.inference.inference_step.generate_response")

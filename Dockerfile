@@ -1,5 +1,7 @@
 # Use an official Python runtime as a base image
-FROM --platform=linux/amd64 python:3.10-slim
+FROM python:3.10-slim
+# if macOS Silicon: 
+# FROM --platform=linux/amd64 python:3.10-slim
 
 # Set the working directory inside the container
 WORKDIR /workspace

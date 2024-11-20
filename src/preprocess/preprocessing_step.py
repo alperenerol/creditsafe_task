@@ -4,9 +4,9 @@ import logging
 from src.utils.file_utils import save_text, get_preprocessed_text_path
 from src.preprocess.text_operations import process_text
 
-def raw_text_preprocess(raw_text_content, pdf_file):
+def raw_text_preprocess(raw_text_content, pdf_file, text_dir):
     # Check if preprocessed text already exists
-    preprocessed_text_path = get_preprocessed_text_path(pdf_file)
+    preprocessed_text_path = get_preprocessed_text_path(pdf_file, text_dir)
     
     if os.path.exists(preprocessed_text_path):
         logging.info(f"Preprocessed text already exists for {pdf_file}. Skipping preprocessing.")
@@ -21,14 +21,15 @@ def raw_text_preprocess(raw_text_content, pdf_file):
             return None
         
     try:
+        preprocessed_text_path = get_preprocessed_text_path(pdf_file, text_dir)
         # Preprocess Text
         preprocessed_text = process_text(raw_text_content)
         
         if not preprocessed_text:
-            logging.error(f"Error processing extracted text of {pdf_file}: {str(e)}") # Log if preprocessing fails
-
+            logging.error(f"Error processing extracted text of {pdf_file}. No text was generated during preprocessing.")  # Log if preprocessing fails
+            return None
+        
         # Save Preprocessed Text
-        preprocessed_text_path = get_preprocessed_text_path(pdf_file)
         save_text(preprocessed_text_path, preprocessed_text)
         logging.info(f"Preprocessed text saved for {pdf_file}")
 

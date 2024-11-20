@@ -1,11 +1,11 @@
 import os
 import logging
-from config import PDF_DIR
+from config import PDF_DIR, TEXT_DIR
 
 from src.utils.file_utils import save_text, get_raw_text_path
 from src.extract.ocr_operations import extract_text_ocr
 
-def pdf_extract(pdf_file):
+def pdf_extract(pdf_file, pdf_dir=PDF_DIR):
     """
     Extract text from a PDF and save it to disk, if the raw text file does not already exist.
 
@@ -15,9 +15,9 @@ def pdf_extract(pdf_file):
     Returns:
         tuple: (raw_text, pdf_file) if extraction was successful, otherwise (None, pdf_file)
     """
-    pdf_path = os.path.join(PDF_DIR, pdf_file)
+    pdf_path = os.path.join(pdf_dir, pdf_file)
     # Save Extracted Raw Text
-    raw_text_path = get_raw_text_path(pdf_file)
+    raw_text_path = get_raw_text_path(pdf_file, text_dir=TEXT_DIR)
 
     # Check if the raw text file already exists
     if os.path.exists(raw_text_path):

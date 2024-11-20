@@ -3,7 +3,7 @@ import logging
 from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures import as_completed
 
-from config import PDF_DIR, LOG_FILE
+from config import PDF_DIR, TEXT_DIR, LOG_FILE
 from src.extract.pdf_extraction_step import pdf_extract
 from src.preprocess.preprocessing_step import raw_text_preprocess
 from src.inference.inference_step import perform_inference
@@ -12,7 +12,7 @@ from src.utils.logging_utils import setup_logging, reset_logging
 # Set up logging
 setup_logging(log_file=LOG_FILE, level=logging.INFO, console=True)
 
-def parallel_pdf_extract():
+def execute_workflow():
     # Step 1: Extract Text and Preprocess
     logging.info("Starting OCR text extraction from PDFs...")
 
@@ -31,7 +31,7 @@ def parallel_pdf_extract():
                 raw_text, pdf_file = future.result()  # Get the result of the completed task
                 if raw_text:
                     # Preprocess Text
-                    preprocessed_text = raw_text_preprocess(raw_text, pdf_file)
+                    preprocessed_text = raw_text_preprocess(raw_text, pdf_file, TEXT_DIR)
                     if preprocessed_text:
                         # Perform LLM Inference
                         perform_inference(preprocessed_text, pdf_file)
@@ -40,5 +40,5 @@ def parallel_pdf_extract():
                 logging.error(f"Error during parallel processing: {e}")
 
 if __name__ == "__main__":
-    parallel_pdf_extract()
+    execute_workflow()
     reset_logging()

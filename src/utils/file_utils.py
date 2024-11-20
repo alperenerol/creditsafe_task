@@ -44,8 +44,8 @@ def save_json(output_filename, new_data):
 
     logging.info(f"New LLM response data appended to output file.")
 
-def get_raw_text_path(pdf_file):
-    return os.path.join(TEXT_DIR, pdf_file.replace('.pdf', '_raw.txt'))
+def get_raw_text_path(pdf_file, text_dir=TEXT_DIR):
+    return os.path.join(text_dir, pdf_file.replace('.pdf', '_raw.txt'))
 
-def get_preprocessed_text_path(pdf_file):
-    return os.path.join(TEXT_DIR, pdf_file.replace('.pdf', '_preprocessed.txt'))
+def get_preprocessed_text_path(pdf_file, text_dir=TEXT_DIR):
+    return os.path.join(text_dir, pdf_file.replace('.pdf', '_preprocessed.txt'))
